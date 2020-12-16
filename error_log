@@ -1,0 +1,7 @@
+[07-Sep-2017 07:45:36 UTC] PHP Fatal error:  Uncaught exception 'ErrorException' with message 'get_cfg_var() has been disabled for security reasons' in /home/villastock/villa/vendor/symfony/debug/ExceptionHandler.php:43
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'get_cfg_var() h...', '/home/villastoc...', 43, Array)
+#1 /home/villastock/villa/vendor/symfony/debug/ExceptionHandler.php(43): get_cfg_var('xdebug.file_lin...')
+#2 /home/villastock/villa/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(211): Symfony\Component\Debug\ExceptionHandler->__construct(true)
+#3 /home/villastock/villa/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(175): Illuminate\Foundation\Exceptions\Handler->convertExceptionToResponse(Object(ErrorException))
+#4 /home/villastock/villa/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(119): Illuminate\Foundation\Exceptions\Handler->prepareResponse(Object(Illuminate\Http\Request), Object(ErrorException)) in /home/villastock/villa/vendor/symfony/debug/ExceptionHandler.php on line 43

@@ -1,0 +1,261 @@
+@extends('layout')
+@section('breadcrumb')
+<div id="titlebar" class="">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2><i class="fa fa-plus-circle"></i> {{ Ceviri('Yeni İlan Ver') }}</h2>
+			</div>
+		</div>
+	</div>
+</div>
+
+@endsection
+@section('content')
+<!-- Container -->
+<div class="container">
+	<div class="row">
+
+		<!-- Submit Page -->
+		<div class="col-md-12">
+			<form action="" method="post" enctype="multipart/form-data">
+				{{ csrf_field() }}
+				<div class="submit-page">
+					<h3>{{ Ceviri('Bilgiler') }}</h3>
+					<div class="submit-section">
+						<div class="form">
+							<h5>{{ Ceviri('Başlık') }} <!--<i class="tip" data-tip-content="Type title that will also contains an unique feature of your property (e.g. renovated, air contidioned)"></i>--></h5>
+							<input class="search-field" type="text" name="title" value="{{ $property->title }}"/>
+						</div>
+						<div class="row with-forms">
+							<div class="col-md-6">
+								<h5>{{ Ceviri('Tip') }}</h5>
+								<select class="chosen-select-no-single" name="type" onchange="PropType()" id="proptype">
+									<option label="blank"></option>
+									<option value="1" {{ $property->type == 1 ? 'selected' : ''}}>{{ Ceviri('Satılık') }}</option>
+									<option value="2" {{ $property->type == 2 ? 'selected' : ''}}>{{ Ceviri('Kiralık') }}</option>
+								</select>
+							</div>
+							<div class="col-md-6" id="period">
+								<h5>Period <span>(Only for rent)</span></h5>
+								<select class="chosen-select-no-single" name="period">
+									<option label="blank"></option>
+									<option value="1" {{ $property->period == 1 ? 'selected' : ''}}>{{ Ceviri('Kısa Süreli') }}</option>
+									<option value="2" {{ $property->period == 2 ? 'selected' : ''}}>{{ Ceviri('Uzun Süreli') }}</option>
+								</select>
+							</div>
+						</div>
+						<div class="row with-forms">
+							<div class="col-md-6">
+								<h5>{{ Ceviri('Alan') }}</h5>
+								<div class="select-input disabled-first-option">
+									<input type="text" data-unit="m&#178;" name="area" value="{{ $property->area }}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<h5>{{ Ceviri('Bahçe Alanı') }}</h5>
+								<div class="select-input disabled-first-option">
+									<input type="text" data-unit="m&#178;" name="gardenarea" value="{{ $property->gardenarea }}">
+								</div>
+							</div>
+						</div>
+						<div class="row with-forms">
+							<div class="col-md-4">
+								<h5>{{ Ceviri('Denize Uzaklığı') }}</h5>
+								<input type="text" name="seadistance" value="{{ $property->seadistance }}">
+							</div>
+							<div class="col-md-4">
+								<h5>{{ Ceviri('Odalar') }}</h5>
+								<input type="text" name="room" value="{{ $property->room }}">
+							</div>
+							<div class="col-md-4">
+								<h5>{{ Ceviri('Banyolar') }}</h5>
+								<input type="text" name="bathroom" value="{{ $property->bathroom }}">
+							</div>
+						</div>
+						<div class="row with-forms">
+							<div class="col-xs-10">
+								<h5>{{ Ceviri('Fiyat') }} <!--<i class="tip" data-tip-content="Type overall or monthly price if property is for rent"></i>--></h5>
+								<div class="select-input disabled-first-option">
+									<input class="text-right" type="text" data-unit="" name="price" value="{{ $property->price }}">
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<h5>{{ Ceviri('Birimi') }}</h5>
+								<select class="chosen-select-no-single" data-placeholder="Select" name="doviz">
+									<option label="blank"></option>
+									<option value="1" {{ $property->doviz == 1 ? 'selected' : ''}}>TL(₺)</option>
+									<option value="2" {{ $property->doviz == 2 ? 'selected' : ''}}>USD($)</option>
+									<option value="3" {{ $property->doviz == 3 ? 'selected' : ''}}>EUR(€)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<!--
+						<h3>Gallery</h3>
+						<div class="submit-section">
+							<form action="/file-upload" class="dropzone" ></form>
+						</div>
+					-->
+					<h3>{{ Ceviri('Yeri') }}</h3>
+					<div class="submit-section">
+						<div class="row with-forms">
+							<div class="col-md-6">
+								<h5>{{ Ceviri('Adres') }}</h5>
+								<input type="text" name="address" value="{{ $property->address }}">
+							</div>
+							<div class="col-md-6">
+								<h5>{{ Ceviri('İlçe') }}</h5>
+								<input type="text" name="city" value="{{ $property->city }}">
+							</div>
+							<div class="col-md-6">
+								<h5>{{ Ceviri('İl') }}</h5>
+								<input type="text" name="district" value="{{ $property->district }}">
+							</div>
+							<div class="col-md-6">
+								<h5>{{ Ceviri('Ülke') }}</h5>
+								<input type="text" name="country" value="{{ $property->country }}">
+							</div>
+						</div>
+					</div>
+					<h3>{{ Ceviri('Detaylar') }}</h3>
+					<div class="submit-section">
+						<div class="form">
+							<h5>{{ Ceviri('Detaylar') }}</h5>
+							<textarea class="WYSIWYG" name="detail" cols="40" rows="3" id="summary" spellcheck="true">{{ $property->detail }}</textarea>
+						</div>
+						<div class="form">
+							<h5>Google {{ Ceviri('Harita') }} (iframe)</h5>
+							<input type="text" name="googlemap" value="{{ $property->googlemap }}">
+						</div>
+						<div class="ekozellik">
+    						<h5>{{ Ceviri('Ek Özellikler') }} <span>({{ Ceviri('Opsiyonel') }})</span></h5>
+    						<div class="checkboxes in-row margin-bottom-20">
+    							<input id="check-2" type="checkbox" name="furniture" value="1" {{ $property->furniture == 1 ? 'checked' : ''}}>
+    							<label for="check-2">{{ Ceviri('Eşyalı') }}</label>
+    							<input id="check-3" type="checkbox" name="detached" value="1" {{ $property->detached == 1 ? 'checked' : ''}}>
+    							<label for="check-3">{{ Ceviri('Tam Müstakil') }}</label>
+    							<input id="check-4" type="checkbox" name="insite" value="1" {{ $property->insite == 1 ? 'checked' : ''}}>
+    							<label for="check-4">{{ Ceviri('Site İçerisinde') }}</label>
+    							<input id="check-5" type="checkbox" name="garden" value="1" {{ $property->garden == 1 ? 'checked' : ''}}>
+    							<label for="check-5">{{ Ceviri('Bahçe') }}</label>
+    							<input id="check-6" type="checkbox" name="pool" value="1" {{ $property->pool == 1 ? 'checked' : ''}}>
+    							<label for="check-6">{{ Ceviri('Yüzme Havuzu') }}</label>
+    							<input id="check-7" type="checkbox" name="kidspool" value="1" {{ $property->kidspool == 1 ? 'checked' : ''}}>
+    							<label for="check-7">{{ Ceviri('Çocuk Yüzme Havuzu') }}</label>
+    							<input id="check-9" type="checkbox" name="garage" value="1" {{ $property->garage == 1 ? 'checked' : ''}}>
+    							<label for="check-9">{{ Ceviri('Garaj') }}</label>
+    						</div>
+						    <hr/>
+    						<div class="row with-forms">
+    							<div class="col-md-4">
+    								<h5>{{ Ceviri('Bina Yaşı') }}</h5>
+    								<input type="text" name="buildingage" value="{{ $property->buildingage }}">
+    							</div>
+    							<div class="col-md-4">
+    								<h5>{{ Ceviri('Kat Sayısı') }}</h5>
+    								<input type="text" name="floor" value="{{ $property->floor }}">
+    							</div>
+    							<div class="col-md-4">
+    								<h5>{{ Ceviri('Isınma') }}</h5>
+    								<select class="chosen-select-no-single" data-placeholder="{{ Ceviri('Seçin') }}" name="heating">
+    									<option label="blank"></option>
+    									<option value="1" {{ $property->heating == 1 ? 'selected' : ''}}>{{ Ceviri('Soba') }}</option>
+    									<option value="2" {{ $property->heating == 2 ? 'selected' : ''}}>{{ Ceviri('Merkezi Isıtma') }}</option>
+    									<option value="3" {{ $property->heating == 3 ? 'selected' : ''}}>{{ Ceviri('Yerden Isıtma') }}</option>
+    									<option value="4" {{ $property->heating == 4 ? 'selected' : ''}}>{{ Ceviri('Klima') }}</option>
+    									<option value="5" {{ $property->heating == 5 ? 'selected' : ''}}>{{ Ceviri('Jeotermal') }}</option>
+    									<option value="6" {{ $property->heating == 6 ? 'selected' : ''}}>{{ Ceviri('Şömine') }}</option>
+    									<option value="7" {{ $property->heating == 7 ? 'selected' : ''}}>{{ Ceviri('Isı Pompası') }}</option>
+    								</select>
+    							</div>
+    						</div>
+						</div>
+					</div>
+					<div class="divider"></div>
+					<h3>{{ Ceviri('Resimler') }}</h3>
+					<div class="dropzone" id="myId">
+					   <div class="fallback">
+					       <input id="files" multiple="true" name="files" type="file">
+					    </div>
+					</div>
+					<div id="dropzonePreview"></div>
+					<div class="clearfix"></div>
+					<div class="divider"></div>
+					<button class="button preview margin-top-5">{{ Ceviri('Kaydet') }}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="preview-template" style="display: none;">
+	<div class="col-sm-2">
+        <img data-dz-thumbnail />
+		<input type="hidden" name="images[]" class="dzid" value="">
+		<div class="in-row">
+			<input class="radiobtn-v" id="" type="radio" name="featured" value="1">
+			<label for="check-v">{{ Ceviri('Öntanımlı Resim') }}</label>
+		</div>
+		<div>
+			<a class="dz-remove" href="javascript:undefined;" data-dz-remove="">{{ Ceviri('Sil') }}</a>
+		</div>
+    </div>
+</div>
+@endsection
+@section('customjs')
+<script>
+	$(document).ready(function(){
+		$("#period").hide();
+	});
+	function PropType(){
+		var type = $("#proptype").val();
+		if(type == 2){
+			$("#period").show();
+		}else{
+			$("#period").hide();
+		}
+	}
+</script>
+<script type="text/javascript" src="{{ asset('scripts/dropzone.js') }}"></script>
+<script>
+Dropzone.autoDiscover = false;
+	$(".dropzone").dropzone({
+		url: "/user/ajax/images",
+		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> {{ Ceviri('Resim yüklemek için tıklayın') }}",
+		maxFilesize: 2,
+		acceptedFiles: 'image/*',
+		previewsContainer: '#dropzonePreview',
+		previewTemplate: document.getElementById('preview-template').innerHTML,
+		sending: function(file, xhr, formData) {
+        // Pass token. You can use the same method to pass any other values as well such as a id to associate the image with for example.
+	        formData.append("_token", $('[name=_token').val()); // Laravel expect the token post value to be named _token by default
+	    },
+		success: function(file,response){
+			//console.log(response);
+			//$(file.previewTemplate).find('.dzid').attr('id', "document-" + response);
+			$(file.previewTemplate).find('.dzid').val(response.fullname);
+			$(file.previewTemplate).find('.radiobtn-v').val(response.fullname);
+		},
+		removedfile: function(file) {
+    		var name = file.name;
+			var _ref;
+			return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+		},
+		init: function(file,previewTemplate){
+			@if($property->image)
+				@foreach (json_decode($property->image->image_links) as $image)
+					var mockFile = { name: "{{ $property->title }}", size: 123 };
+                	this.emit("addedfile", mockFile);
+					this.emit("thumbnail", mockFile, "{{ asset('storage/images/'.$image) }}");
+					$('#dropzonePreview .col-sm-2:last-child').find('.dzid').val('{{$image}}');
+					$('#dropzonePreview .col-sm-2:last-child').find('.radiobtn-v').val('{{$image}}');
+					@if($image==$property->image->vitrine)
+						$('#dropzonePreview .col-sm-2:last-child').find('.radiobtn-v').prop( "checked", true );
+					@endif
+				@endforeach
+			@endif
+		}
+	});
+
+</script>
+@endsection
